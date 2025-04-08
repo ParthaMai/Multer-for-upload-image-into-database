@@ -22,13 +22,16 @@ router.post('/create',upload.single('photo'), async(req,res) =>{ // upload.singl
     try{
         const {name, age, email, phone , address}= req.body;
 
+        const photoPath = req.file ? req.file.path : null ; // get the file path if uploaded.
+
         const newStudent = new Student({ // Student is an object
 
             name,
             age,
             email,
             phone,
-            address
+            address,
+            photo: photoPath
         });
         const response=await newStudent.save();
         console.log('data saved');

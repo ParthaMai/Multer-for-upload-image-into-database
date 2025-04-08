@@ -15,7 +15,7 @@ const studentSchema= new mongoose.Schema ({
     email: {
         type: String,
         required: false,
-        unique: false
+        unique: true
     },
     phone: {
         type: String ,
@@ -24,6 +24,9 @@ const studentSchema= new mongoose.Schema ({
     address: {
         type: String ,
         required: false
+    },
+    photo: {
+        type: String // store base64 encoded data  means the uploaded photo
     }
 
 });
