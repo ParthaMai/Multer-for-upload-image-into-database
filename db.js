@@ -29,5 +29,6 @@ db.on('disconnected', ()=> {
     console.log('disconnected');
 });
 
+
 //Export the database connection
 module.exports=db;
