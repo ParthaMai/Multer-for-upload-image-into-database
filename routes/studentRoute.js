@@ -5,15 +5,17 @@ const multer=require('multer');
 
 
 // set up multer to store files in upload folders
-const storage= multer.diskStorage({
-    destination: (req,file, cb) =>{ //cb is callback
-        cb(null,'uploads/'); // add the image into this uploads folder
-    },
-    filename: (req, file,cb)=>{
-        const suffix=Date.now(); // this is add bec same rename image problemmm..so we add a date then date is not same  
-        cb(null,suffix + '-' + file.originalname);
-    }
-});
+// const storage= multer.diskStorage({
+//     destination: (req,file, cb) =>{ //cb is callback
+//         cb(null,'uploads/'); // add the image into this uploads folder
+//     },
+//     filename: (req, file,cb)=>{
+//         const suffix=Date.now(); // this is add bec same rename image problemmm..so we add a date then date is not same  
+//         cb(null,suffix + '-' + file.originalname);
+//     }
+// });
+
+const storage = multer.memoryStorage();
 
 const upload= multer({storage});
 
@@ -22,7 +24,8 @@ router.post('/create',upload.single('photo'), async(req,res) =>{ // upload.singl
     try{
         const {name, age, email, phone , address}= req.body;
 
-        const photoPath = req.file ? req.file.path : null ; // get the file path if uploaded.
+        // const photoPath = req.file ? req.file.path : null ; // get the file path if uploaded.
+        const photoBase64= req.file ? req.file.buffer.toString('base64'): null;
 
         const newStudent = new Student({ // Student is an object
 
@@ -31,7 +34,7 @@ router.post('/create',upload.single('photo'), async(req,res) =>{ // upload.singl
             email,
             phone,
             address,
-            photo: photoPath
+            photo: photoBase64
         });
         const response=await newStudent.save();
         console.log('data saved');
